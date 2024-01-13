@@ -86,5 +86,7 @@ packer.startup(function(use)
         require("nvim-surround").setup({})
     end
   })
+  --git
+  use 'tpope/vim-fugitive'
   end
 )

@@ -106,6 +106,15 @@ require('telescope').setup{
   }
 }
 
+-- Configure vim-fugitive
+vim.api.nvim_exec([[
+augroup fugitive_settings
+    autocmd!
+    " Open fugitive in a vertical split
+    autocmd FileType fugitive setlocal splitright
+augroup END
+]], false)
+
 -- Set the nvim-tree configurations
 --[=[
 vim.g.nvim_tree_side = 'left'

@@ -190,4 +190,23 @@ function attach_to_debug()
 end 
 
 key_map('n', '<leader>da', ':lua attach_to_debug()<CR>')
+
+--git
+--key_map('n', ']g', {map=[[&diff ? ']g' : '<cmd>Gitsigns next_hunk<CR>']], opts={expr=true}})
+--key_map('n', '[g', {map=[[&diff ? '[g' : '<cmd>Gitsigns prev_hunk<CR>']], opts={expr=true}})
+key_map('n', '<Leader>gp', ':Gitsigns preview_hunk<CR>')
+key_map('n', '<Leader>gs', ':Gitsigns stage_hunk<CR>')
+key_map('n', '<Leader>gr', ':Gitsigns reset_hunk<CR>')
+key_map('n', '<Leader>gu', ':Gitsigns undo_stage_hunk<CR>')
+key_map('n', '<Leader>gS', ':Gitsigns stage_buffer<CR>')
+key_map('n', '<Leader>gU', ':Gitsigns reset_buffer_index<CR>')
+key_map('n', '<Leader>gR', ':Gitsigns reset_buffer<CR>')
+key_map('n', '<Leader>gg', ':Git<CR>')
+key_map('n', '<Leader>gs', ':Git status<CR>')
+key_map('n', '<Leader>gc', ':Git commit | startinsert<CR>')
+key_map('n', '<Leader>gd', ':Git difftool<CR>')
+key_map('n', '<Leader>gm', ':Git mergetool<CR>')
+key_map('n', '<Leader>g|', ':Gvdiffsplit<CR>')
+key_map('n', '<Leader>g_', ':Gdiffsplit<CR>')
+-- Popup what's changed in a hunk under cursor
 return P
