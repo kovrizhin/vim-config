@@ -31,6 +31,16 @@ key_map('n', '<leader>fs', ':lua require"telescope.builtin".live_grep()<CR>')
 key_map('n', '<leader>fh', ':lua require"telescope.builtin".help_tags()<CR>')
 key_map('n', '<leader>fb', ':lua require"telescope.builtin".buffers()<CR>')
 key_map('n', '<leader>ct', '<Cmd>TagbarToggle<CR>')
+key_map('n', "<leader>ff", "<cmd>Telescope find_files<cr>")
+key_map('n', "<leader>fg", "<cmd>Telescope live_grep<cr>")
+key_map('n', "<leader>fb", "<cmd>Telescope buffers<cr>")
+key_map('n', "<leader>fm", "<cmd>Telescope marks<cr>")
+key_map('n', "<leader>fr", "<cmd>Telescope lsp_references<cr>")
+key_map('n', "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>")
+key_map('n', "<leader>fc", "<cmd>Telescope lsp_incoming_calls<cr>")
+key_map('n', "<leader>fo", "<cmd>Telescope lsp_outgoing_calls<cr>")
+key_map('n', "<leader>fi", "<cmd>Telescope lsp_implementations<cr>")
+key_map('n', "<leader>fx", "<cmd>Telescope diagnostics bufnr=0<cr>")
 
 -- Git
 key_map('n', '<leader>gc', ':lua git_commit_all()<CR>')
@@ -87,6 +97,12 @@ key_map('n', '<leader>b', ':lua require"dap".toggle_breakpoint()<CR>')
 key_map('n', '<leader>B', ':lua require"dap".set_breakpoint(vim.fn.input("Condition: "))<CR>')
 key_map('n', '<leader>bl', ':lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log: "))<CR>')
 key_map('n', '<leader>dr', ':lua require"dap".repl.open()<CR>')
+key_map('n', '<leader>di', ':lua require"dap.ui.widgets".hover()')
+key_map('n', '<leader>dr', ':lua require"dap.ui.widgets".centered_float(widgets.scopes)')
+key_map('n', '<leader>df', '<cmd>Telescope dap frames<cr>')
+key_map('n', '<leader>dh', '<cmd>Telescope dap commands<cr>')
+
+
 
 -- Java
 
