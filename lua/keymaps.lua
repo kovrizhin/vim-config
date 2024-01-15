@@ -31,7 +31,7 @@ key_map('n', '<leader>fs', ':lua require"telescope.builtin".live_grep()<CR>')
 key_map('n', '<leader>fh', ':lua require"telescope.builtin".help_tags()<CR>')
 key_map('n', '<leader>fb', ':lua require"telescope.builtin".buffers()<CR>')
 key_map('n', '<leader>ct', '<Cmd>TagbarToggle<CR>')
-key_map('n', "<leader>ff", "<cmd>Telescope find_files<cr>")
+--key_map('n', "<leader>ff", "<cmd>Telescope find_files<cr>")
 key_map('n', "<leader>fg", "<cmd>Telescope live_grep<cr>")
 key_map('n', "<leader>fb", "<cmd>Telescope buffers<cr>")
 key_map('n', "<leader>fm", "<cmd>Telescope marks<cr>")
@@ -118,8 +118,13 @@ end
 function P.run_command_method_test()
   local node_utils = require'node-utils'
   local method_name = node_utils.get_current_full_method_name("\\#")
-  local mvn_run = 'mvn test -Dmaven.surefire.debug -Dtest="' .. method_name .. '"' 
-  vim.cmd('term ' .. mvn_run)
+  if detect_build_system() == "gradle" then
+   local mvn_run = 'mvn test -Dmaven.surefire.debug -Dtest="' .. method_name .. '"' 
+   vim.cmd('term ' .. mvn_run)
+  else
+    local gradle_run = 'gradlew test --tests "' .. method_name .. '"'
+    vim.cmd('term ' .. gradle_run)
+  end
 end
 
 function P.run_command_class_test()
@@ -134,6 +139,9 @@ function P.map_java_keys(bufnr)
   P.map_lsp_keys()
   key_map('n', '<leader>oi', ':lua require("jdtls").organize_imports()<CR>')
   key_map('n', '<leader>jc', ':lua require("jdtls).compile("incremental")')
+  key_map("n", "<leader>vc", ':lua require("jdtls").test_class()<CR>')
+  key_map("n", "<leader>vm", ':lua require("jdtls").test_nearest_method()<CR>')
+
 end
 
 -- hop
@@ -146,12 +154,33 @@ key_map('n', '<leader>sf', ':w<CR>')
 key_map('n', '<S-Q>', '<Cmd>q<CR>')
 
 
+function detect_build_system()
+    local gradle_file = vim.fn.findfile('build.gradle', '.;')
+    local maven_file = vim.fn.findfile('pom.xml', '.;')
+    local gradle_file_kts = vim.fn.findfile('build.gradle.kts', '.;')
+
+    if gradle_file ~= '' or gragle_file_kts ~= '' then
+        return "gradle"
+    elseif maven_file ~= '' then
+        return "gradle"
+    else
+        return "gredle"
+    end
+end
+
 -- run debug
 function get_test_runner(test_name, debug)
-  if debug then
-    return 'mvn test -Dmaven.surefire.debug -Dtest="' .. test_name .. '"' 
+  if(debug_open_centered_scopes() == "gradle") then 
+    if debug then 
+      return  'gradlew test --debug-jvm --tests "' .. test_name .. '"'
+    end
+    return  'gradlew test --tests "' .. test_name .. '"'
+  else 
+   if debug then
+     return 'mvn test -Dmaven.surefire.debug -Dtest="' .. test_name .. '"' 
+   end
+   return 'mvn test -Dtest="' .. test_name .. '"' 
   end
-  return 'mvn test -Dtest="' .. test_name .. '"' 
 end
 
 function run_java_test_method(debug)
@@ -188,6 +217,7 @@ vim.keymap.set("n", "<leader>tm", function() run_java_test_method() end)
 vim.keymap.set("n", "<leader>TM", function() run_java_test_method(true) end)
 vim.keymap.set("n", "<leader>tc", function() run_java_test_class() end)
 vim.keymap.set("n", "<leader>TC", function() run_java_test_class(true) end)
+
 vim.keymap.set("n", "<F9>", function() run_spring_boot() end)
 vim.keymap.set("n", "<F10>", function() run_spring_boot(true) end)
 

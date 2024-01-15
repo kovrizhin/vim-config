@@ -1,5 +1,5 @@
-local packer = require'packer'
-local util = require'packer.util'
+local packer = require 'packer'
+local util = require 'packer.util'
 
 packer.init({
   package_root = util.join_paths(vim.fn.stdpath('data'), 'site', 'pack')
@@ -9,7 +9,7 @@ packer.init({
 --
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
-  
+
   -- list of the plugins
   use 'nvim-treesitter/nvim-treesitter'
   use 'akinsho/bufferline.nvim'
@@ -17,14 +17,14 @@ packer.startup(function(use)
   use 'max397574/better-escape.nvim'
   -- themes
   use 'sainnhe/gruvbox-material'
-  use 'sainnhe/everforest' 
-  
+  use 'sainnhe/everforest'
+
   -- LSP
   use "williamboman/mason.nvim"
   use 'neovim/nvim-lspconfig'
-  use { "mfussenegger/nvim-jdtls", ft = { "java" }}
+  use { "mfussenegger/nvim-jdtls", ft = { "java" } }
   use "ray-x/lsp_signature.nvim"
-  
+
   -- Rust
   use 'simrat39/rust-tools.nvim'
   use 'preservim/tagbar'
@@ -44,13 +44,13 @@ packer.startup(function(use)
   use {
     "hrsh7th/nvim-cmp",
     requires = {
-      "hrsh7th/cmp-buffer", 
+      "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-nvim-lsp",
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
-      'octaltree/cmp-look', 
-      'hrsh7th/cmp-path', 
-      'f3fora/cmp-spell', 
+      'octaltree/cmp-look',
+      'hrsh7th/cmp-path',
+      'f3fora/cmp-spell',
       'hrsh7th/cmp-emoji'
     }
   }
@@ -60,10 +60,10 @@ packer.startup(function(use)
     'phaazon/hop.nvim',
     branch = 'v2', -- optional but strongly recommended
   }
-  use 'tpope/vim-commentary' 
+  use 'tpope/vim-commentary'
   use 'nvim-lualine/lualine.nvim'
   use 'akinsho/toggleterm.nvim'
-  
+
   use {
     "windwp/nvim-autopairs",
     config = function() require("nvim-autopairs").setup {} end
@@ -83,10 +83,24 @@ packer.startup(function(use)
     "kylechui/nvim-surround",
     tag = "*", -- Use for stability; omit to use `main` branch for the latest features
     config = function()
-        require("nvim-surround").setup({})
+      require("nvim-surround").setup({})
     end
   })
   --git
   use 'tpope/vim-fugitive'
-  end
+  use 'udalov/kotlin-vim'
+  use "sindrets/diffview.nvim"
+  use 'nvim-lua/plenary.nvim'
+  use {
+    "someone-stole-my-name/yaml-companion.nvim",
+    requires = {
+      { "neovim/nvim-lspconfig" },
+      { "nvim-lua/plenary.nvim" },
+      { "nvim-telescope/telescope.nvim" },
+    },
+    config = function()
+      require("telescope").load_extension("yaml_schema")
+    end,
+  }
+end
 )

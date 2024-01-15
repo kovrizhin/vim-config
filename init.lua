@@ -13,7 +13,7 @@ require('debugging')
 require('toggleterm-config')
 -- Neovide Configuration
 if vim.g.neovide ~= nil then
-  vim.opt.guifont = { "Fantasque Sans Mono", ":h16"}
+  vim.opt.guifont = { "Fantasque Sans Mono", ":h16" }
   vim.g.neovide_scroll_animation_length = 0.3
   -- vim.g.neovide_fullscreen = true
 end
@@ -30,26 +30,26 @@ vim.g.gruvbox_material_better_performance = 1
 vim.cmd("colorscheme gruvbox-material")
 
 -- Bufferline --
-require("bufferline").setup{
+require("bufferline").setup {
   options = {
     separator_style = "slant",
     diagnostics = "nvim_lsp",
-  
+
     offsets = {
-        {
-            filetype = "NvimTree",
-            text = "File Explorer",
-            highlight = "Directory",
-            separator = true,
-        }
+      {
+        filetype = "NvimTree",
+        text = "File Explorer",
+        highlight = "Directory",
+        separator = true,
+      }
     }
   }
 }
 
 -- TreeSettter Config
-local configs = require'nvim-treesitter.configs'
+local configs = require 'nvim-treesitter.configs'
 configs.setup {
-  ensure_installed = {"lua", "rust", "c", "go", "json", "html", "yaml"},
+  ensure_installed = { "lua", "rust", "c", "go", "json", "html", "yaml" },
   sync_install = false,
   auto_install = true,
   highlight = { enable = true },
@@ -58,17 +58,17 @@ configs.setup {
 
 -- LSP
 require("mason").setup()
-local nvim_lsp = require'lspconfig' 
+local nvim_lsp = require 'lspconfig'
 
 
 -- Autopairs
 require('nvim-autopairs').setup({
-  disable_filetype = { "TelescopePrompt" , "vim" },
+  disable_filetype = { "TelescopePrompt", "vim" },
 })
 
 -- TabNine
 local tabnine = require('cmp_tabnine.config')
-tabnine:setup({max_lines = 1000, max_num_results = 20, sort = true})
+tabnine:setup({ max_lines = 1000, max_num_results = 20, sort = true })
 
 -- hop
 local hop = require('hop')
@@ -76,17 +76,17 @@ hop.setup {}
 
 -- Indent lines
 --require("indent_blankline").setup {
-    -- for example, context is off by default, use this to turn it on
+-- for example, context is off by default, use this to turn it on
 --    show_current_context = true,
 --    show_current_context_start = true,
 --}
 
 -- Better Escape
 require("better_escape").setup {
-    mapping = {"jk", "jj"}, -- a table with mappings to use
-    timeout = vim.o.timeoutlen, -- the time in which the keys must be hit in ms. Use option timeoutlen by default
-    clear_empty_lines = false, -- clear line after escaping if there is only whitespace
-    keys = "<Esc>", -- keys used for escaping, if it is a function will use the result everytime
+  mapping = { "jk", "jj" },     -- a table with mappings to use
+  timeout = vim.o.timeoutlen,   -- the time in which the keys must be hit in ms. Use option timeoutlen by default
+  clear_empty_lines = false,    -- clear line after escaping if there is only whitespace
+  keys = "<Esc>",               -- keys used for escaping, if it is a function will use the result everytime
 }
 
 -- Terminal
@@ -94,7 +94,7 @@ require('toggleterm').setup()
 
 -- Telescope
 actions = require('telescope.actions')
-require('telescope').setup{
+require('telescope').setup {
   defaults = {
     layout_strategy = "vertical",
     mappings = {
@@ -137,5 +137,49 @@ vim.cmd([[
   autocmd FileType NvimTree setlocal nowrap
   autocmd FileType NvimTree setlocal winfixwidth
 ]])
-]=]--
+]=]
+    --
+local on_attach = function(client, bufnr)
+  -- Regular Neovim LSP client keymappings
 
+  require 'keymaps'.map_java_keys(bufnr);
+  require "lsp_signature".on_attach({
+    bind = true, -- This is mandatory, otherwise border config won't get registered.
+    floating_window_above_cur_line = false,
+    padding = '',
+    handler_opts = {
+      border = "rounded"
+    }
+  }, bufnr)
+end
+
+require 'lspconfig'.kotlin_language_server.setup {
+  on_attach = on_attach,
+}
+
+require 'lspconfig'.lua_ls.setup {
+  on_attach = on_attach,
+}
+
+
+require 'lspconfig'.yamlls.setup {
+  on_attach = on_attach,
+  settings = {
+    yaml = {
+      schemas = { kubernetes = "globPattern",
+        ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
+        ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+        ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
+        ["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
+        ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+        ["http://json.schemastore.org/ansible-playbook"] = "*play*.{yml,yaml}",
+        ["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
+        ["https://json.schemastore.org/dependabot-v2"] = ".github/dependabot.{yml,yaml}",
+        ["https://json.schemastore.org/gitlab-ci"] = "*gitlab-ci*.{yml,yaml}",
+        ["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] = "*api*.{yml,yaml}",
+        ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "*docker-compose*.{yml,yaml}",
+        ["https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json"] = "*flow*.{yml,yaml}",
+      },
+    }
+  }
+}

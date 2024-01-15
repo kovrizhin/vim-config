@@ -39,7 +39,8 @@ local config = {
 --   '-jar', path_to_jar,
 --   '-configuration', path_to_lsp_server,
 --   '-data', workspace_dir,
-    'jdtls'
+    'jdtls',
+    "-javaagent:/home/oleg/Downloads/value-2.9.3.jar"
   },
 
   -- This is the default if not provided, you can remove it. Or adjust as needed.
@@ -143,3 +144,26 @@ end
 -- This starts a new client & server,
 -- or attaches to an existing client & server depending on the `root_dir`.
 require('jdtls').start_or_attach(config)
+
+local on_attach = function(client, bufnr)
+  -- Regular Neovim LSP client keymappings
+  
+  require'keymaps'.map_java_keys(bufnr);
+  require "lsp_signature".on_attach({
+    bind = true, -- This is mandatory, otherwise border config won't get registered.
+    floating_window_above_cur_line = false,
+    padding = '',
+    handler_opts = {
+      border = "rounded"
+    }
+  }, bufnr)
+
+end
+
+
+
+require'lspconfig'.kotlin_language_server.setup{
+    on_attach = on_attach,
+}
+
+
