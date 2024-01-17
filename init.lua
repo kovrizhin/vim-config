@@ -3,13 +3,14 @@ o = vim.o
 bo = vim.bo
 wo = vim.wo
 
+require('packages')
 require('basic')
 require('keymaps')
-require('packages')
 require('completion')
 require('rust')
 require('tree')
 require('debugging')
+require("spectre-setup")
 require('toggleterm-config')
 -- Neovide Configuration
 if vim.g.neovide ~= nil then
@@ -161,9 +162,17 @@ require 'lspconfig'.lua_ls.setup {
   on_attach = on_attach,
 }
 
-
+local cfg = require("yaml-companion").setup({
+  -- Add any options here, or leave empty to use the default settings
+  -- lspconfig = {
+  --   cmd = {"yaml-language-server"}
+  -- },
+})
 require 'lspconfig'.yamlls.setup {
-  on_attach = on_attach,
+ -- on_attach = on_attach,
+  cfg
+}
+--[==[
   settings = {
     yaml = {
       schemas = { kubernetes = "globPattern",
@@ -183,3 +192,4 @@ require 'lspconfig'.yamlls.setup {
     }
   }
 }
+]==]--

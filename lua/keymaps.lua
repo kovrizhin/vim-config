@@ -255,4 +255,18 @@ key_map('n', '<Leader>gm', ':Git mergetool<CR>')
 key_map('n', '<Leader>g|', ':Gvdiffsplit<CR>')
 key_map('n', '<Leader>g_', ':Gdiffsplit<CR>')
 -- Popup what's changed in a hunk under cursor
+vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {
+    desc = "Toggle Spectre"
+})
+vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
+    desc = "Search current word"
+})
+vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<CR>', {
+    desc = "Search current word"
+})
+vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
+    desc = "Search on current file"
+})
+
 return P
+
