@@ -52,7 +52,7 @@ packer.startup(function(use)
   -- LSP
   use "williamboman/mason.nvim"
   use 'neovim/nvim-lspconfig'
-  use { "mfussenegger/nvim-jdtls" }
+  use "mfussenegger/nvim-jdtls"
   use "ray-x/lsp_signature.nvim"
 
   -- Rust
