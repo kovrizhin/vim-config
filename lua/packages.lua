@@ -120,6 +120,16 @@ packer.startup(function(use)
   use 'tpope/vim-fugitive'
   use 'udalov/kotlin-vim'
   use "sindrets/diffview.nvim"
+  use({
+    "kdheepak/lazygit.nvim",
+    requires = {
+        "nvim-telescope/telescope.nvim",
+        "nvim-lua/plenary.nvim",
+    },
+    config = function()
+        require("telescope").load_extension("lazygit")
+    end,
+  })
   use {
     "someone-stole-my-name/yaml-companion.nvim",
     requires = {

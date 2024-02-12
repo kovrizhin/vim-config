@@ -256,6 +256,14 @@ key_map('n', '<Leader>gd', ':Git difftool<CR>')
 key_map('n', '<Leader>gm', ':Git mergetool<CR>')
 key_map('n', '<Leader>g|', ':Gvdiffsplit<CR>')
 key_map('n', '<Leader>g_', ':Gdiffsplit<CR>')
+
+key_map('n', '<Leader>lg', ':LazyGit<CR>')
+key_map('n', '<Leader>dt', ':DiffviewOpen<CR>')
+key_map('n', '<Leader>cp', ':VGit project_diff_preview<CR>')
+
+
+
+
 -- Popup what's changed in a hunk under cursor
 vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {
     desc = "Toggle Spectre"
