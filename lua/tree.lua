@@ -2,13 +2,13 @@
 vim.g.loaded = 1
 vim.g.loaded_netrwPlugin = 1
 require'nvim-tree'.setup {
-  auto_open = true,
-  open_on_startup = true,
+  --auto_open = true,
+  --open_on_startup = true,
   disable_netrw       = true,
   hijack_netrw        = true,
-  open_on_setup       = false,
-  ignore_ft_on_setup  = {},
-  auto_close          = true,
+  --open_on_setup       = false,
+  --ignore_ft_on_setup  = {},
+  --auto_close          = true,
   open_on_tab         = false,
   hijack_cursor       = true,
   update_cwd          = false,
@@ -33,10 +33,10 @@ require'nvim-tree'.setup {
   view = {
     width = 30,
     side = 'left',
-    auto_resize = false,
-    mappings = {
-      custom_only = false,
-      list = {}
-    }
+    --auto_resize = false,
+--[[    mappings = {]]
+      --[[custom_only = false,]]
+      --[[list = {}]]
+--[[    }]]
   }
 }

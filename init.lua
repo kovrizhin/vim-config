@@ -146,7 +146,7 @@ local on_attach = function(client, bufnr)
   require 'keymaps'.map_java_keys(bufnr);
   require "lsp_signature".on_attach({
     bind = true, -- This is mandatory, otherwise border config won't get registered.
-    floating_window_above_cur_line = false,
+    floating_window_above_cur_line = true,
     padding = '',
     handler_opts = {
       border = "rounded"
@@ -162,6 +162,12 @@ require 'lspconfig'.lua_ls.setup {
   on_attach = on_attach,
 }
 
+require 'lspconfig'.tsserver.setup {
+  on_attach = on_attach,
+  filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+  cmd = { "typescript-language-server", "--stdio" }
+}
+
 local cfg = require("yaml-companion").setup({
   -- Add any options here, or leave empty to use the default settings
   -- lspconfig = {
@@ -172,6 +178,8 @@ require 'lspconfig'.yamlls.setup {
  -- on_attach = on_attach,
   cfg
 }
+
+require('vgit').setup()
 --[==[
   settings = {
     yaml = {

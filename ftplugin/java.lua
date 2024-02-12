@@ -1,6 +1,6 @@
 local jdtls_ok, jdtls = pcall(require, "jdtls")
 if not jdtls_ok then
- -- vim.notify jdtls_ok)
+  -- vim.notify jdtls_ok)
   vim.notify "JDTLS not found, install with `:LspInstall jdtls`"
   return
 end
@@ -26,20 +26,20 @@ local config = {
   -- The command that starts the language server
   -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
   cmd = {
---   '/usr/lib/jvm/java-17-openjdk/bin/java',
---   '-Declipse.application=org.eclipse.jdt.ls.core.id1',
---   '-Dosgi.bundles.defaultStartLevel=4',
---   '-Declipse.product=org.eclipse.jdt.ls.core.product',
---   '-Dlog.protocol=true',
---   '-Dlog.level=ALL',
---   '-javaagent:' .. lombok_path,
---   '-Xms1g',
---   '--add-modules=ALL-SYSTEM',
---   '--add-opens', 'java.base/java.util=ALL-UNNAMED',
---   '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
---   '-jar', path_to_jar,
---   '-configuration', path_to_lsp_server,
---   '-data', workspace_dir,
+    --   '/usr/lib/jvm/java-17-openjdk/bin/java',
+    --   '-Declipse.application=org.eclipse.jdt.ls.core.id1',
+    --   '-Dosgi.bundles.defaultStartLevel=4',
+    --   '-Declipse.product=org.eclipse.jdt.ls.core.product',
+    --   '-Dlog.protocol=true',
+    --   '-Dlog.level=ALL',
+    --   '-javaagent:' .. lombok_path,
+    --   '-Xms1g',
+    --   '--add-modules=ALL-SYSTEM',
+    --   '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+    --   '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+    --   '-jar', path_to_jar,
+    --   '-configuration', path_to_lsp_server,
+    --   '-data', workspace_dir,
     'jdtls',
     "-javaagent:/home/oleg/Downloads/value-2.9.3.jar"
   },
@@ -63,7 +63,13 @@ local config = {
           {
             name = "JavaSE-17",
             path = "/usr/lib/jvm/java-17-openjdk",
-          }
+            default = true,
+          },
+          {
+            name = "JavaSE-11",
+            path = "/usr/lib/jvm/java-11-openjdk",
+       ---  default = true,
+          },
         }
       },
       maven = {
@@ -131,7 +137,7 @@ local config = {
 }
 
 config['on_attach'] = function(client, bufnr)
-  require'keymaps'.map_java_keys(bufnr);
+  require 'keymaps'.map_java_keys(bufnr);
   require "lsp_signature".on_attach({
     bind = true, -- This is mandatory, otherwise border config won't get registered.
     floating_window_above_cur_line = false,
@@ -146,10 +152,20 @@ end
 -- or attaches to an existing client & server depending on the `root_dir`.
 require('jdtls').start_or_attach(config)
 
+require('dap').configurations.java = {
+  {
+    type = 'java',
+    request = 'attach',
+    name = "Debug (Attach) - Remote",
+    hostName = "127.0.0.1",
+    port = 5005,
+  },
+}
+
 local on_attach = function(client, bufnr)
   -- Regular Neovim LSP client keymappings
-  
-  require'keymaps'.map_java_keys(bufnr);
+
+  require 'keymaps'.map_java_keys(bufnr);
   require "lsp_signature".on_attach({
     bind = true, -- This is mandatory, otherwise border config won't get registered.
     floating_window_above_cur_line = false,
@@ -158,13 +174,10 @@ local on_attach = function(client, bufnr)
       border = "rounded"
     }
   }, bufnr)
-
 end
 
 
 
-require'lspconfig'.kotlin_language_server.setup{
-    on_attach = on_attach,
+require 'lspconfig'.kotlin_language_server.setup {
+  on_attach = on_attach,
 }
-
-

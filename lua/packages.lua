@@ -90,7 +90,6 @@ packer.startup(function(use)
   use 'tpope/vim-fugitive'
   use 'udalov/kotlin-vim'
   use "sindrets/diffview.nvim"
-  use 'nvim-lua/plenary.nvim'
   use {
     "someone-stole-my-name/yaml-companion.nvim",
     requires = {
@@ -103,5 +102,16 @@ packer.startup(function(use)
     end,
   }
   use 'nvim-pack/nvim-spectre'
+  use 'preservim/nerdcommenter'
+
+  --navigation in text
+  use 'justinmk/vim-sneak'
+  use 'easymotion/vim-easymotion'
+  use {
+    'tanvirtin/vgit.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim'
+    }
+  }
 end
 )

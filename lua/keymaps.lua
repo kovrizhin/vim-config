@@ -97,8 +97,8 @@ key_map('n', '<leader>b', ':lua require"dap".toggle_breakpoint()<CR>')
 key_map('n', '<leader>B', ':lua require"dap".set_breakpoint(vim.fn.input("Condition: "))<CR>')
 key_map('n', '<leader>bl', ':lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log: "))<CR>')
 key_map('n', '<leader>dr', ':lua require"dap".repl.open()<CR>')
-key_map('n', '<leader>di', ':lua require"dap.ui.widgets".hover()')
-key_map('n', '<leader>dr', ':lua require"dap.ui.widgets".centered_float(widgets.scopes)')
+key_map('n', '<leader>di', ':lua require"dap.ui.widgets".hover()<CR>')
+--key_map('n', '<leader>dr', ':lua require"dap.ui.widgets".centered_float(widgets.scopes)')
 key_map('n', '<leader>df', '<cmd>Telescope dap frames<cr>')
 key_map('n', '<leader>dh', '<cmd>Telescope dap commands<cr>')
 
@@ -230,6 +230,8 @@ function attach_to_debug()
       name = "Attach to the process";
       hostName = 'localhost';
       port = '5005';
+      projectName = 'planning-cloud';
+      javaHome = '/usr/lib/jvm/java-11-openjdk';
     },
   }
   dap.continue()
