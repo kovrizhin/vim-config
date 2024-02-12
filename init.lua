@@ -230,3 +230,6 @@ require 'lspconfig'.yamlls.setup {
   }
 }
 ]==]--
+
+
+require('dap-python').setup('python')

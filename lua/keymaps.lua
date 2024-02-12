@@ -106,8 +106,10 @@ key_map('n', '<leader>bl', ':lua require"dap".set_breakpoint(nil, nil, vim.fn.in
 key_map('n', '<leader>dr', ':lua require"dap".repl.open()<CR>')
 key_map('n', '<leader>di', ':lua require"dap.ui.widgets".hover()<cr>')
 key_map('n', '<leader>ds', ':lua require"dap.ui.widgets".centered_float(require"dap.ui.widgets".scopes)<cr>')
-key_map('n', '<leader>df', '<cmd>Telescope dap frames<cr>')
+key_map('n', '<leader>df', ':lua require"dap.ui.widgets".centered_float(require"dap.ui.widgets".frames)<cr>')
+--key_map('n', '<leader>df', '<cmd>Telescope dap frames<cr>')
 key_map('n', '<leader>dh', '<cmd>Telescope dap commands<cr>')
+key_map('n', '<leader>dp', ':lua require("dap").continue()<cr>')
 
 
 
