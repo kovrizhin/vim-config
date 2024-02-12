@@ -53,9 +53,16 @@ function P.map_lsp_keys()
   key_map('n', '<S-R>', ':lua vim.lsp.buf.references()<CR>')
   key_map('n', '<S-H>', ':lua vim.lsp.buf.hover()<CR>')
   key_map('n', '<leader>ca', ':lua vim.lsp.buf.code_action()<CR>')
+  key_map('v', '<leader>ca', ':lua vim.lsp.buf.range_code_action()<CR>')
+  key_map('n', '<leader>nc', ':lua vim.lsp.buf.rename()<CR>')
   key_map('n', '<leader>nc', ':lua vim.lsp.buf.rename()<CR>')
   key_map('n', '<leader>fr', ':lua require"telescope.builtin".lsp_references()') 
   key_map('n', '<leader>ff', ':lua vim.lsp.buf.format()<CR>')
+  key_map('n', '<leader>ev', ':lua require("jdtls").extract_variable()<CR>')
+  key_map('n', '<leader>ec', ':lua jdtls.extract_constant()<CR>')
+
+
+
 end
 
 -- nvim tree
@@ -97,8 +104,8 @@ key_map('n', '<leader>b', ':lua require"dap".toggle_breakpoint()<CR>')
 key_map('n', '<leader>B', ':lua require"dap".set_breakpoint(vim.fn.input("Condition: "))<CR>')
 key_map('n', '<leader>bl', ':lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log: "))<CR>')
 key_map('n', '<leader>dr', ':lua require"dap".repl.open()<CR>')
-key_map('n', '<leader>di', ':lua require"dap.ui.widgets".hover()<CR>')
---key_map('n', '<leader>dr', ':lua require"dap.ui.widgets".centered_float(widgets.scopes)')
+key_map('n', '<leader>di', ':lua require"dap.ui.widgets".hover()<cr>')
+key_map('n', '<leader>ds', ':lua require"dap.ui.widgets".centered_float(require"dap.ui.widgets".scopes)<cr>')
 key_map('n', '<leader>df', '<cmd>Telescope dap frames<cr>')
 key_map('n', '<leader>dh', '<cmd>Telescope dap commands<cr>')
 
@@ -119,7 +126,7 @@ function P.run_command_method_test()
   local node_utils = require'node-utils'
   local method_name = node_utils.get_current_full_method_name("\\#")
   if detect_build_system() == "gradle" then
-   local mvn_run = 'mvn test -Dmaven.surefire.debug -Dtest="' .. method_name .. '"' 
+   local mvn_run = 'mvn clean test -Dmaven.surefire.debug -Dtest="' .. method_name .. '"'
    vim.cmd('term ' .. mvn_run)
   else
     local gradle_run = 'gradlew test --tests "' .. method_name .. '"'
@@ -130,7 +137,7 @@ end
 function P.run_command_class_test()
   local node_utils = require'node-utils'
   local class_name = node_utils.get_current_full_class_name()
-  local mvn_run = 'mvn test -Dmaven.surefire.debug -Dtest="' .. class_name .. '"' 
+  local mvn_run = 'mvn clean test -Dmaven.surefire.debug -Dtest="' .. class_name .. '"'
   vim.cmd('term ' .. mvn_run)
 end
 
@@ -170,17 +177,10 @@ end
 
 -- run debug
 function get_test_runner(test_name, debug)
-  if(debug_open_centered_scopes() == "gradle") then 
-    if debug then 
-      return  'gradlew test --debug-jvm --tests "' .. test_name .. '"'
-    end
-    return  'gradlew test --tests "' .. test_name .. '"'
-  else 
-   if debug then
-     return 'mvn test -Dmaven.surefire.debug -Dtest="' .. test_name .. '"' 
-   end
-   return 'mvn test -Dtest="' .. test_name .. '"' 
+  if debug then
+    return 'mvn clean test -Dmaven.surefire.debug -Dtest="' .. test_name .. '"'
   end
+  return 'mvn clean test -Dtest="' .. test_name .. '"'
 end
 
 function run_java_test_method(debug)

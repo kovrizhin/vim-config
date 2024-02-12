@@ -1,9 +1,10 @@
 local jdtls_ok, jdtls = pcall(require, "jdtls")
-if not jdtls_ok then
+  if not jdtls_ok then
   -- vim.notify jdtls_ok)
   vim.notify "JDTLS not found, install with `:LspInstall jdtls`"
-  return
+   return
 end
+
 
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
 local jdtls_path = "/home/oleg/.local/share/nvim/mason/share/jdtls"
@@ -53,7 +54,7 @@ local config = {
   -- for a list of options
   settings = {
     java = {
-      home = '/usr/lib/jvm/java-17-openjdk',
+      home = '/usr/lib/jvm/java-21-openjdk',
       eclipse = {
         downloadSources = true,
       },
@@ -61,8 +62,8 @@ local config = {
         updateBuildConfiguration = "interactive",
         runtimes = {
           {
-            name = "JavaSE-17",
-            path = "/usr/lib/jvm/java-17-openjdk",
+            name = "JavaSE-21",
+            path = "/usr/lib/jvm/java-21-openjdk",
             default = true,
           },
           {
