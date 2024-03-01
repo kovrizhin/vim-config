@@ -63,7 +63,11 @@ packer.startup(function(use)
   use 'mfussenegger/nvim-dap'
   use 'rcarriga/cmp-dap'
   use 'mfussenegger/nvim-dap-python'
-
+  use {
+    'theHamsta/nvim-dap-virtual-text',
+  }
+  use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+  use "folke/neodev.nvim"
   -- Telescope
   use 'nvim-lua/plenary.nvim'
   use 'nvim-lua/popup.nvim'

@@ -70,6 +70,7 @@ vim.api.nvim_set_keymap('n', '<leader>tt', ':NvimTreeToggle<CR>', { noremap = tr
 vim.api.nvim_set_keymap('n', '<leader>tf', ':NvimTreeFindFile<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<TAB>',':bn<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<C-TAB>', ':bp<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-q>', ':bd<CR>:bp<CR>', { noremap = true, silent = true })
 
 
 -- bufferline
@@ -127,7 +128,7 @@ end
 function P.run_command_method_test()
   local node_utils = require'node-utils'
   local method_name = node_utils.get_current_full_method_name("\\#")
-  if detect_build_system() == "gradle" then
+  if detect_build_system() == "maven" then
    local mvn_run = 'mvn clean test -Dmaven.surefire.debug -Dtest="' .. method_name .. '"'
    vim.cmd('term ' .. mvn_run)
   else
@@ -166,12 +167,12 @@ key_map('n', '<S-Q>', '<Cmd>q<CR>')
 function detect_build_system()
     local gradle_file = vim.fn.findfile('build.gradle', '.;')
     local maven_file = vim.fn.findfile('pom.xml', '.;')
-    local gradle_file_kts = vim.fn.findfile('build.gradle.kts', '.;')
+    local gradle_file_kts = vim.fn.findfile('settings.gradle.kts', ".;");
 
     if gradle_file ~= '' or gragle_file_kts ~= '' then
         return "gradle"
     elseif maven_file ~= '' then
-        return "gradle"
+        return "maven"
     else
         return "gredle"
     end
@@ -179,10 +180,19 @@ end
 
 -- run debug
 function get_test_runner(test_name, debug)
+  local sys = detect_build_system()
+  if sys == "maven" then
   if debug then
     return 'mvn clean test -Dmaven.surefire.debug -Dtest="' .. test_name .. '"'
   end
   return 'mvn clean test -Dtest="' .. test_name .. '"'
+  else
+    if debug then
+      return "gradle cleanTest test --info --debug-jvm --tests '" .. test_name:gsub("\\#", ".") .. "'"
+    end
+    local cmd = "gradle cleanTest test --info --tests '" .. test_name:gsub("\\#", ".") .. "'"
+    return cmd
+  end
 end
 
 function run_java_test_method(debug)
@@ -232,8 +242,8 @@ function attach_to_debug()
       name = "Attach to the process";
       hostName = 'localhost';
       port = '5005';
-      projectName = 'planning-cloud';
-      javaHome = '/usr/lib/jvm/java-11-openjdk';
+      projectName = '';
+      javaHome = '/usr/lib/jvm/java-17-openjdk';
     },
   }
   dap.continue()
