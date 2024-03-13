@@ -72,6 +72,11 @@ packer.startup(function(use)
   use 'nvim-lua/plenary.nvim'
   use 'nvim-lua/popup.nvim'
   use 'nvim-lua/telescope.nvim'
+  use {"jemag/telescope-diff.nvim",
+    requires = {
+      { "nvim-telescope/telescope.nvim" },
+    }
+  }
   use 'jremmen/vim-ripgrep'
 
   -- CMP
@@ -82,7 +87,9 @@ packer.startup(function(use)
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-nvim-lsp",
       'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
+      --'saadparwaiz1/cmp_luasnip',
+      'hrsh7th/cmp-vsnip',
+      'hrsh7th/vim-vsnip',
       'octaltree/cmp-look',
       'hrsh7th/cmp-path',
       'f3fora/cmp-spell',
@@ -158,5 +165,18 @@ packer.startup(function(use)
       'nvim-lua/plenary.nvim'
     }
   }
+
+  --yaml_schema
+  use {
+  "someone-stole-my-name/yaml-companion.nvim",
+  requires = {
+      { "neovim/nvim-lspconfig" },
+      { "nvim-lua/plenary.nvim" },
+      { "nvim-telescope/telescope.nvim" },
+  },
+  config = function()
+    require("telescope").load_extension("yaml_schema")
+  end,
+ }
 end
 )

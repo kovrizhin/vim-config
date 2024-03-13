@@ -18,14 +18,16 @@ cmp.setup {
   end,
   snippet = { 
     expand = function(args)
-      require'luasnip'.lsp_expand(args.body)
+      vim.fn["vsnip#anonymous"](args.body)
     end
   },
   sources = {
       {name = 'nvim_lsp'}, 
-      {name = 'buffer', keyword_length = 3},
-      {name = "luasnip", keyword_length = 2},
-      {name = 'cmp_tabnine', keyword_length = 3},
+      { name = 'nvim_lsp_signature_help' },
+      { name = 'vsnip' },
+      {name = 'buffer' },
+      {name = "luasnip"},
+      {name = 'cmp_tabnine'},
   },
 
   window = {

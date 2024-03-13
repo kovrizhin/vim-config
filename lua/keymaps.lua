@@ -42,6 +42,13 @@ key_map('n', "<leader>fo", "<cmd>Telescope lsp_outgoing_calls<cr>")
 key_map('n', "<leader>fi", "<cmd>Telescope lsp_implementations<cr>")
 key_map('n', "<leader>fx", "<cmd>Telescope diagnostics bufnr=0<cr>")
 
+vim.keymap.set("n", "<leader>sC", function()
+  require("telescope").extensions.diff.diff_files({ hidden = true })
+end, { desc = "Compare 2 files" })
+vim.keymap.set("n", "<leader>sc", function()
+  require("telescope").extensions.diff.diff_current({ hidden = true })
+end, { desc = "Compare file with current" })
+
 -- Git
 key_map('n', '<leader>gc', ':lua git_commit_all()<CR>')
 key_map('n', '<leader>ga', ':lua git_commit_push_all()<CR>')
@@ -242,7 +249,7 @@ function attach_to_debug()
       name = "Attach to the process";
       hostName = 'localhost';
       port = '5005';
-      projectName = '';
+      projectName = ''; -- need to change for project name 
       javaHome = '/usr/lib/jvm/java-17-openjdk';
     },
   }

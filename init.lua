@@ -61,6 +61,12 @@ configs.setup {
 require("mason").setup()
 local nvim_lsp = require 'lspconfig'
 
+require'luasnip'.config.set_config({
+    history = true,
+    updateevents = 'TextChanged,TextChangedI'
+})
+
+require'luasnip.loaders.from_vscode'.load()
 
 -- Autopairs
 require('nvim-autopairs').setup({
@@ -106,6 +112,7 @@ require('telescope').setup {
     }
   }
 }
+require("telescope").load_extension("diff")
 
 -- Configure vim-fugitive
 vim.api.nvim_exec([[
@@ -154,8 +161,12 @@ local on_attach = function(client, bufnr)
   }, bufnr)
 end
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
 require 'lspconfig'.kotlin_language_server.setup {
---  on_attach = on_attach,
+  on_attach = on_attach,
+  capabilities = capabilities,
 }
 
 require("neodev").setup({
@@ -164,7 +175,8 @@ require("neodev").setup({
 })
 
 require 'lspconfig'.lua_ls.setup {
---  on_attach = on_attach,
+  on_attach = on_attach,
+  capabilities = capabilities,
   settings = {
     Lua = {
       completion = {
@@ -227,6 +239,7 @@ end
 require 'lspconfig'.pylsp.setup {
 --  cmd = {"pylsp"},
   on_attach = on_attach,
+  capabilities = capabilities,
   settings = {
     pylsp = {
     plugins = {
@@ -252,6 +265,7 @@ require 'lspconfig'.pylsp.setup {
 
 require 'lspconfig'.tsserver.setup {
   on_attach = on_attach,
+  capabilities = capabilities,
   filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
   cmd = { "typescript-language-server", "--stdio" }
 }
@@ -293,5 +307,19 @@ require 'lspconfig'.yamlls.setup {
 }
 ]==]--
 
+--[[require 'lspconfig'.yamlls.setup{]]
+    --[[settings = {]]
+        --[[yaml = {]]
+           --[[schemas = { kubernetes = "globPattern" },]]
+      --[[}]]
+   --[[}]]
+--[[}]]
+local cfg = require("yaml-companion").setup({
+  -- Add any options here, or leave empty to use the default settings
+  -- lspconfig = {
+  --   cmd = {"yaml-language-server"}
+  -- },
+})
+require("lspconfig")["yamlls"].setup(cfg)
 
 require('dap-python').setup('python')

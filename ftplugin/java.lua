@@ -132,7 +132,25 @@ local config = {
   },
   init_options = {
     bundles = {
-      vim.fn.glob("/home/oleg/Downloads/com.microsoft.java.debug.plugin-0.50.0.jar", 1)
+      vim.fn.glob("/home/oleg/Downloads/com.microsoft.java.debug.plugin-0.50.0.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/com.microsoft.java.test.plugin-0.40.1.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/com.microsoft.java.test.runner-jar-with-dependencies.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-jupiter-api_5.9.3.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-jupiter-engine_5.9.3.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-jupiter-migrationsupport_5.9.3.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-jupiter-params_5.9.3.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-commons_1.9.3.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-engine_1.9.3.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-launcher_1.9.3.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-runner_1.9.3.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-suite-api_1.9.3.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-suite-commons_1.9.3.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-suite-engine_1.9.3.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-vintage-engine_5.9.3.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/org.apiguardian.api_1.1.2.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/org.eclipse.jdt.junit4.runtime_1.3.0.v20220609-1843.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/org.eclipse.jdt.junit5.runtime_1.1.100.v20220907-0450.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/org.eclipse.jdt.junit5.runtime_1.1.100.v20220907-0450.jar", 1),
     },
   },
 }
@@ -149,6 +167,10 @@ config['on_attach'] = function(client, bufnr)
   }, bufnr)
   require('jdtls').setup_dap({ hotcodereplace = 'auto' })
 end
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+config['capabilities'] = capabilities
 -- This starts a new client & server,
 -- or attaches to an existing client & server depending on the `root_dir`.
 require('jdtls').start_or_attach(config)
@@ -181,4 +203,5 @@ end
 
 require 'lspconfig'.kotlin_language_server.setup {
   on_attach = on_attach,
+  capabilities=capabilities,
 }
