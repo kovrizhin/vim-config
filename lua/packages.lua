@@ -3,16 +3,16 @@ local fn = vim.fn
 -- Automatically install packer
 local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 if fn.empty(fn.glob(install_path)) > 0 then
-	PACKER_BOOTSTRAP = fn.system({
-		"git",
-		"clone",
-		"--depth",
-		"1",
-		"https://github.com/wbthomason/packer.nvim",
-		install_path,
-	})
-	print("Installing packer close and reopen Neovim...")
-	vim.cmd([[packadd packer.nvim]])
+  PACKER_BOOTSTRAP = fn.system({
+    "git",
+    "clone",
+    "--depth",
+    "1",
+    "https://github.com/wbthomason/packer.nvim",
+    install_path,
+  })
+  print("Installing packer close and reopen Neovim...")
+  vim.cmd([[packadd packer.nvim]])
 end
 
 -- Autocommand that reloads neovim whenever you save the plugins.lua file
@@ -26,7 +26,7 @@ vim.cmd([[
 -- Use a protected call so we don't error out on first use
 local status_ok, packer = pcall(require, "packer")
 if not status_ok then
-	return
+  return
 end
 
 local util = require 'packer.util'
@@ -39,7 +39,6 @@ packer.init({
 --
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
-
   -- list of the plugins
   use 'nvim-treesitter/nvim-treesitter'
   use 'akinsho/bufferline.nvim'
@@ -66,13 +65,12 @@ packer.startup(function(use)
   use {
     'theHamsta/nvim-dap-virtual-text',
   }
-  use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
-  use "folke/neodev.nvim"
+  use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } }
   -- Telescope
   use 'nvim-lua/plenary.nvim'
   use 'nvim-lua/popup.nvim'
   use 'nvim-lua/telescope.nvim'
-  use {"jemag/telescope-diff.nvim",
+  use { "jemag/telescope-diff.nvim",
     requires = {
       { "nvim-telescope/telescope.nvim" },
     }
@@ -131,15 +129,15 @@ packer.startup(function(use)
   --git
   use 'tpope/vim-fugitive'
   use 'udalov/kotlin-vim'
-  use "sindrets/diffview.nvim"
+  --  use "sindrets/diffview.nvim"
   use({
     "kdheepak/lazygit.nvim",
     requires = {
-        "nvim-telescope/telescope.nvim",
-        "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+      "nvim-lua/plenary.nvim",
     },
     config = function()
-        require("telescope").load_extension("lazygit")
+      require("telescope").load_extension("lazygit")
     end,
   })
   use {
@@ -168,15 +166,38 @@ packer.startup(function(use)
 
   --yaml_schema
   use {
-  "someone-stole-my-name/yaml-companion.nvim",
-  requires = {
+    "someone-stole-my-name/yaml-companion.nvim",
+    requires = {
       { "neovim/nvim-lspconfig" },
       { "nvim-lua/plenary.nvim" },
       { "nvim-telescope/telescope.nvim" },
-  },
-  config = function()
-    require("telescope").load_extension("yaml_schema")
-  end,
- }
+    },
+    config = function()
+      require("telescope").load_extension("yaml_schema")
+    end,
+  }
+  use { "towolf/vim-helm", ft = "helm" }
+  -- translate
+  use {
+    "voldikss/vim-translator"
+  }
+  --copilo
+  use "github/copilot.vim"
+
+  use {
+    'harrisoncramer/gitlab.nvim',
+    requires = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",
+      "stevearc/dressing.nvim",    -- Recommended but not required. Better UI for pickers.
+      "nvim-tree/nvim-web-devicons", -- Recommended but not required. Icons in discussion tree.
+    },
+    run = function() require("gitlab.server").build(true) end,
+    config = function()
+      require("gitlab").setup()
+    end,
+  }
+  use "folke/neodev.nvim"
 end
 )

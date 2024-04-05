@@ -9,7 +9,7 @@ local key_map = function(mode, key, result)
     mode,
     key,
     result,
-    {noremap = true, silent = true}
+    { noremap = true, silent = true }
   )
 end
 
@@ -31,7 +31,7 @@ key_map('n', '<leader>fs', ':lua require"telescope.builtin".live_grep()<CR>')
 key_map('n', '<leader>fh', ':lua require"telescope.builtin".help_tags()<CR>')
 key_map('n', '<leader>fb', ':lua require"telescope.builtin".buffers()<CR>')
 key_map('n', '<leader>ct', '<Cmd>TagbarToggle<CR>')
---key_map('n', "<leader>ff", "<cmd>Telescope find_files<cr>")
+key_map('n', "<leader>ff", "<cmd>Telescope find_files<cr>")
 key_map('n', "<leader>fg", "<cmd>Telescope live_grep<cr>")
 key_map('n', "<leader>fb", "<cmd>Telescope buffers<cr>")
 key_map('n', "<leader>fm", "<cmd>Telescope marks<cr>")
@@ -54,7 +54,7 @@ key_map('n', '<leader>gc', ':lua git_commit_all()<CR>')
 key_map('n', '<leader>ga', ':lua git_commit_push_all()<CR>')
 
 --LSP
-function P.map_lsp_keys() 
+function P.map_lsp_keys()
   key_map('n', '<C-]>', ':lua vim.lsp.buf.definition()<CR>')
   key_map('n', '<C-k>', ':lua vim.lsp.buf.signature_help()<CR>')
   key_map('n', '<S-R>', ':lua vim.lsp.buf.references()<CR>')
@@ -63,19 +63,16 @@ function P.map_lsp_keys()
   key_map('v', '<leader>ca', ':lua vim.lsp.buf.range_code_action()<CR>')
   key_map('n', '<leader>nc', ':lua vim.lsp.buf.rename()<CR>')
   key_map('n', '<leader>nc', ':lua vim.lsp.buf.rename()<CR>')
-  key_map('n', '<leader>fr', ':lua require"telescope.builtin".lsp_references()') 
-  key_map('n', '<leader>ff', ':lua vim.lsp.buf.format()<CR>')
+  key_map('n', '<leader>fr', ':lua require"telescope.builtin".lsp_references()')
+  key_map('n', '<C-A-l>', ':lua vim.lsp.buf.format()<CR>')
   key_map('n', '<leader>ev', ':lua require("jdtls").extract_variable()<CR>')
   key_map('n', '<leader>ec', ':lua jdtls.extract_constant()<CR>')
-
-
-
 end
 
 -- nvim tree
 vim.api.nvim_set_keymap('n', '<leader>tt', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>tf', ':NvimTreeFindFile<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<TAB>',':bn<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<TAB>', ':bn<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<C-TAB>', ':bp<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<C-q>', ':bd<CR>:bp<CR>', { noremap = true, silent = true })
 
@@ -92,14 +89,15 @@ local zshTerminal = Terminal:new({ cmd = "zsh", hidden = true })
 function openZshTerminal()
   zshTerminal:toggle()
 end
+
 -- Terminal
 key_map('n', '<leader>op', '<cmd>lua openZshTerminal()<CR>')
 
 
--- Debugging 
+-- Debugging
 
 function debug_open_centered_scopes()
-  local widgets = require'dap.ui.widgets'
+  local widgets = require 'dap.ui.widgets'
   widgets.centered_float(widgets.scopes)
 end
 
@@ -133,11 +131,11 @@ function P.map_rust_keys(bufnr)
 end
 
 function P.run_command_method_test()
-  local node_utils = require'node-utils'
+  local node_utils = require 'node-utils'
   local method_name = node_utils.get_current_full_method_name("\\#")
   if detect_build_system() == "maven" then
-   local mvn_run = 'mvn clean test -Dmaven.surefire.debug -Dtest="' .. method_name .. '"'
-   vim.cmd('term ' .. mvn_run)
+    local mvn_run = 'mvn clean test -Dmaven.surefire.debug -Dtest="' .. method_name .. '"'
+    vim.cmd('term ' .. mvn_run)
   else
     local gradle_run = 'gradlew test --tests "' .. method_name .. '"'
     vim.cmd('term ' .. gradle_run)
@@ -145,7 +143,7 @@ function P.run_command_method_test()
 end
 
 function P.run_command_class_test()
-  local node_utils = require'node-utils'
+  local node_utils = require 'node-utils'
   local class_name = node_utils.get_current_full_class_name()
   local mvn_run = 'mvn clean test -Dmaven.surefire.debug -Dtest="' .. class_name .. '"'
   vim.cmd('term ' .. mvn_run)
@@ -158,7 +156,6 @@ function P.map_java_keys(bufnr)
   key_map('n', '<leader>jc', ':lua require("jdtls).compile("incremental")')
   key_map("n", "<leader>vc", ':lua require("jdtls").test_class()<CR>')
   key_map("n", "<leader>vm", ':lua require("jdtls").test_nearest_method()<CR>')
-
 end
 
 -- hop
@@ -172,27 +169,27 @@ key_map('n', '<S-Q>', '<Cmd>q<CR>')
 
 
 function detect_build_system()
-    local gradle_file = vim.fn.findfile('build.gradle', '.;')
-    local maven_file = vim.fn.findfile('pom.xml', '.;')
-    local gradle_file_kts = vim.fn.findfile('settings.gradle.kts', ".;");
+  local gradle_file = vim.fn.findfile('build.gradle', '.;')
+  local maven_file = vim.fn.findfile('pom.xml', '.;')
+  local gradle_file_kts = vim.fn.findfile('settings.gradle.kts', ".;");
 
-    if gradle_file ~= '' or gragle_file_kts ~= '' then
-        return "gradle"
-    elseif maven_file ~= '' then
-        return "maven"
-    else
-        return "gredle"
-    end
+  if gradle_file ~= '' or gragle_file_kts ~= '' then
+    return "gradle"
+  elseif maven_file ~= '' then
+    return "maven"
+  else
+    return "gredle"
+  end
 end
 
 -- run debug
 function get_test_runner(test_name, debug)
   local sys = detect_build_system()
   if sys == "maven" then
-  if debug then
-    return 'mvn clean test -Dmaven.surefire.debug -Dtest="' .. test_name .. '"'
-  end
-  return 'mvn clean test -Dtest="' .. test_name .. '"'
+    if debug then
+      return 'mvn clean test -Dmaven.surefire.debug -Dtest="' .. test_name .. '"'
+    end
+    return 'mvn clean test -Dtest="' .. test_name .. '"'
   else
     if debug then
       return "gradle cleanTest test --info --debug-jvm --tests '" .. test_name:gsub("\\#", ".") .. "'"
@@ -203,13 +200,13 @@ function get_test_runner(test_name, debug)
 end
 
 function run_java_test_method(debug)
-  local utils = require'utils'
+  local utils = require 'utils'
   local method_name = utils.get_current_full_method_name("\\#")
   vim.cmd('term ' .. get_test_runner(method_name, debug))
 end
 
 function run_java_test_class(debug)
-  local utils = require'utils'
+  local utils = require 'utils'
   local class_name = utils.get_current_full_class_name()
   vim.cmd('term ' .. get_test_runner(class_name, debug))
 end
@@ -217,8 +214,9 @@ end
 function get_spring_boot_runner(profile, debug)
   local debug_param = ""
   if debug then
-    debug_param = ' -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005" '
-  end 
+    debug_param =
+    ' -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005" '
+  end
 
   local profile_param = ""
   if profile then
@@ -244,17 +242,17 @@ function attach_to_debug()
   local dap = require('dap')
   dap.configurations.java = {
     {
-      type = 'java';
-      request = 'attach';
-      name = "Attach to the process";
-      hostName = 'localhost';
-      port = '5005';
-      projectName = ''; -- need to change for project name 
-      javaHome = '/usr/lib/jvm/java-17-openjdk';
+      type = 'java',
+      request = 'attach',
+      name = "Attach to the process",
+      hostName = 'localhost',
+      port = '5005',
+      projectName = '', -- need to change for project name
+      javaHome = '/usr/lib/jvm/java-17-openjdk',
     },
   }
   dap.continue()
-end 
+end
 
 key_map('n', '<leader>da', ':lua attach_to_debug()<CR>')
 
@@ -285,17 +283,40 @@ key_map('n', '<Leader>cp', ':VGit project_diff_preview<CR>')
 
 -- Popup what's changed in a hunk under cursor
 vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {
-    desc = "Toggle Spectre"
+  desc = "Toggle Spectre"
 })
 vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
-    desc = "Search current word"
+  desc = "Search current word"
 })
 vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<CR>', {
-    desc = "Search current word"
+  desc = "Search current word"
 })
 vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
-    desc = "Search on current file"
+  desc = "Search on current file"
 })
 
-return P
 
+-- local gitlab_server = require("gitlab.server")
+ key_map("n", "glr",  ':lua require("gitlab").review()<CR>')
+ key_map("n", "gls",  ':lua require("gitlab").summary()<CR>')
+ key_map("n", "glA",  ':lua require("gitlab").approve()<CR>')
+ key_map("n", "glR",  ':lua require("gitlab").revoke()<CR>')
+ key_map("n", "glc",  ':lua require("gitlab").create_comment()<CR>')
+ key_map("v", "glc",  ':lua require("gitlab").create_multiline_comment()<CR>')
+ key_map("v", "glC",  ':lua require("gitlab").create_comment_suggestion()<CR>')
+ key_map("n", "glO",  ':lua require("gitlab").create_mr()<CR>')
+ key_map("n", "glm",  ':lua require("gitlab").move_to_discussion_tree_from_diagnostic()<CR>')
+ key_map("n", "gln",  ':lua require("gitlab").create_note()<CR>')
+ key_map("n", "gld",  ':lua require("gitlab").toggle_discussions()<CR>')
+ key_map("n", "glaa", ':lua require("gitlab").add_assignee()<CR>')
+ key_map("n", "glad", ':lua require("gitlab").delete_assignee()<CR>')
+ key_map("n", "glla", ':lua require("gitlab").add_label()<CR>')
+ key_map("n", "glld", ':lua require("gitlab").delete_label()<CR>')
+ key_map("n", "glra", ':lua require("gitlab").add_reviewer()<CR>')
+ key_map("n", "glrd", ':lua require("gitlab").delete_reviewer()<CR>')
+ key_map("n", "glp",  ':lua require("gitlab").pipeline()<CR>')
+ key_map("n", "glo",  ':lua require("gitlab").open_in_browser()<CR>')
+ key_map("n", "glM",  ':lua require("gitlab").merge()<CR>')
+
+
+return P
