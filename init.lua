@@ -3,12 +3,15 @@ o = vim.o
 bo = vim.bo
 wo = vim.wo
 
+vim.opt.spelllang = 'en_us'
+vim.opt.spell = true
+vim.opt.spelloptions = "camel"
 
-vim.api.nvim_create_autocmd({'BufNewFile', 'BufRead'} , {
-    pattern = '*/templates/*.{yaml,yml},*/templates/*.tpl,*.gotmpl,helmfile*.{yaml,yml}',
-    callback = function()
-          vim.bo.filetype = 'helm'
-    end
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  pattern = '*/templates/*.{yaml,yml},*/templates/*.tpl,*.gotmpl,helmfile*.{yaml,yml}',
+  callback = function()
+    vim.bo.filetype = 'helm'
+  end
 })
 
 require('packages')
@@ -20,6 +23,7 @@ require('tree')
 require('debugging')
 require("spectre-setup")
 require('toggleterm-config')
+--require('spring_boot')
 -- Neovide Configuration
 if vim.g.neovide ~= nil then
   vim.opt.guifont = { "Fantasque Sans Mono", ":h16" }
@@ -195,15 +199,15 @@ require 'lspconfig'.lua_ls.setup {
 }
 
 require("nvim-dap-virtual-text").setup {
-  enabled = true,                       -- enable this plugin (the default)
-  enabled_commands = true,              -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did not notify its termination)
-  highlight_changed_variables = true,   -- highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
-  highlight_new_as_changed = false,     -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
-  show_stop_reason = true,              -- show stop reason when stopped for exceptions
-  commented = false,                    -- prefix virtual text with comment string
-  only_first_definition = true,         -- only show virtual text at first definition (if there are multiple)
-  all_references = false,               -- show virtual text on all all references of the variable (not only definitions)
-  clear_on_continue = false,            -- clear virtual text on "continue" (might cause flickering when stepping)
+  enabled = true,                     -- enable this plugin (the default)
+  enabled_commands = true,            -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did not notify its termination)
+  highlight_changed_variables = true, -- highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
+  highlight_new_as_changed = false,   -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
+  show_stop_reason = true,            -- show stop reason when stopped for exceptions
+  commented = false,                  -- prefix virtual text with comment string
+  only_first_definition = true,       -- only show virtual text at first definition (if there are multiple)
+  all_references = false,             -- show virtual text on all all references of the variable (not only definitions)
+  clear_on_continue = false,          -- clear virtual text on "continue" (might cause flickering when stepping)
   --- A callback that determines how a variable is displayed or whether it should be omitted
   --- @param variable Variable https://microsoft.github.io/debug-adapter-protocol/specification#Types_Variable
   --- @param buf number
@@ -222,9 +226,9 @@ require("nvim-dap-virtual-text").setup {
   virt_text_pos = vim.fn.has 'nvim-0.10' == 1 and 'inline' or 'eol',
 
   -- experimental features:
-  all_frames = false,       -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
-  virt_lines = false,       -- show virtual lines instead of virtual text (will flicker!)
-  virt_text_win_col = nil   -- position the virtual text at a fixed window column (starting from the first text column) ,
+  all_frames = false,     -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
+  virt_lines = false,     -- show virtual lines instead of virtual text (will flicker!)
+  virt_text_win_col = nil -- position the virtual text at a fixed window column (starting from the first text column) ,
   -- e.g. 80 to position at col
 }
 
@@ -290,6 +294,27 @@ require("lspconfig").helm_ls.setup {
   on_attach = on_attach,
 }
 
+--[[require("lspconfig").cucumber_language_server.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+      filetypes = { "cucumber", "feature" },
+    root_dir = require("lspconfig").util.find_git_ancestor,
+  settings = {
+    cucumber = {
+      features = { '**/*.feature' },
+      glue = { '**/*.java' }
+    }
+  }
+}
+]]
+
+require("lspconfig").cucumber_language_server.setup {
+  --cmd = { "cucumber-language-server", "--stdio" },
+  filetypes = { "feature", "cucumber" },  -- Enable it for .feature files
+  root_dir = function(fname)
+    return lspconfig.util.find_git_ancestor(fname) or vim.loop.os_homedir()
+  end,
+}
 
 
 
@@ -329,7 +354,7 @@ require 'lspconfig'.yamlls.setup {
   }
 }
 ]==]
-     --
+--
 
 --[[require 'lspconfig'.yamlls.setup{]]
 --[[settings = {]]
@@ -352,8 +377,60 @@ vim.g.translator_history_enable = true
 vim.g.translator_window_type = "preview"
 
 require("diffview").setup()
-require("gitlab").setup( {
+require("gitlab").setup({
   debug = { go_request = true, go_response = true },
 })
 
+--require('spring_boot').setup({
+--   ls_path = "/home/oleg/bootlsp/vmware.vscode-spring-boot/extension/language-server", -- 默认依赖 vscode-spring-boot 插件, 如果没有安装 vscode 插件，可以指定路径
+--    jdt_extensions_path =  "/home/oleg/bootlsp/vmware.vscode-spring-boot/extension/jars", -- 默认依赖 vscode-spring-boot 插件
+-- })
+--
+--
 
+require("lspconfig").gopls.setup({
+  on_attach = on_attach,
+  settings = {
+    gopls = {
+      analyses = {
+        unusedparams = true,
+      },
+      staticcheck = true,
+      gofumpt = true,
+    },
+  },
+})
+require('go').setup()
+
+
+require 'lspconfig'.grammarly.setup {
+  on_attach = on_attach,
+}
+
+require("lspconfig").ltex.setup {
+  on_attach = on_attach,
+  cmd = { "ltex-ls" },
+  filetypes = { "text", "markdown" },
+  flags = {
+    debounce_text_changes = 300,
+  },
+}
+
+require('neoclip').setup()
+
+require("flutter-tools").setup {
+  experimental = { lsp_derive_paths = true },
+  debugger = { enabled = true },
+  widget_guides = { enabled = true },
+  closing_tags = { highlight = "ErrorMsg" },
+  dev_log = { open_cmd = "tabedit" },
+  outline = { open_cmd = "30vnew" },
+  lsp = {
+    on_attach = on_attach,
+    --   capabilities = capabilities,
+  },
+  --flutter_path = "/home/oleg/Tools/flutter/flutter/bin/",
+}
+require("telescope").load_extension("flutter")
+require('telescope').load_extension('dap')
+--require('lspconfig').dartls.setup {}

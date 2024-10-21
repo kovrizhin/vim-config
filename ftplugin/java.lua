@@ -5,6 +5,44 @@ local jdtls_ok, jdtls = pcall(require, "jdtls")
    return
 end
 
+--local spring = require("spring_boot")
+--spring.setup({
+--  --ls_path = nil,
+--  jdt_extensions_path = nil,
+--   ls_path = "/home/oleg/bootlsp/vmware.vscode-spring-boot/extension/language-server", -- 默认依赖 vscode-spring-boot 插件, 如果没有安装 vscode 插件，可以指定路径
+--    --jdt_extensions_path =  "/home/oleg/bootlsp/vmware.vscode-spring-boot/extension/jars", -- 默认依赖 vscode-spring-boot 插件
+-- })
+local bundles = {
+      vim.fn.glob("/home/oleg/Downloads/com.microsoft.java.debug.plugin-0.50.0.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/com.microsoft.java.test.plugin-0.40.1.jar", 1),
+      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/com.microsoft.java.test.runner-jar-with-dependencies.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-jupiter-api_5.9.3.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-jupiter-engine_5.9.3.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-jupiter-migrationsupport_5.9.3.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-jupiter-params_5.9.3.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-commons_1.9.3.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-engine_1.9.3.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-launcher_1.9.3.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-runner_1.9.3.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-suite-api_1.9.3.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-suite-commons_1.9.3.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-suite-engine_1.9.3.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-vintage-engine_5.9.3.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/org.apiguardian.api_1.1.2.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/org.eclipse.jdt.junit4.runtime_1.3.0.v20220609-1843.jar", 1),
+      --vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/org.eclipse.jdt.junit5.runtime_1.1.100.v20220907-0450.jar", 1),
+      
+      --vim.fn.glob("/home/oleg/Downloads/vscode-spring-boot-1.53.0-RC.3/extension/jars/commons-lsp-extensions.jar",1),
+      --vim.fn.glob("/home/oleg/Downloads/vscode-spring-boot-1.53.0-RC.3/extension/jars/io.projectreactor.reactor-core.jar",1),
+      --vim.fn.glob("/home/oleg/Downloads/vscode-spring-boot-1.53.0-RC.3/extension/jars/jdt-ls-commons.jar",1),
+      --vim.fn.glob("/home/oleg/Downloads/vscode-spring-boot-1.53.0-RC.3/extension/jars/jdt-ls-extension.jar",1),
+      --vim.fn.glob("/home/oleg/Downloads/vscode-spring-boot-1.53.0-RC.3/extension/jars/org.reactivestreams.reactive-streams.jar",1),
+      --vim.fn.glob("/home/oleg/Downloads/vscode-spring-boot-1.53.0-RC.3/extension/jars/xml-ls-extension.jar",1),
+    }
+
+--vim.list_extend(bundles, require("spring_boot").java_extensions())
+
+
 
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
 local jdtls_path = "/home/oleg/.local/share/nvim/mason/share/jdtls"
@@ -42,7 +80,8 @@ local config = {
     --   '-configuration', path_to_lsp_server,
     --   '-data', workspace_dir,
     'jdtls',
-    "-javaagent:/home/oleg/Downloads/value-2.9.3.jar"
+    --"java -jar -Dsts.lsp.client=vscode /home/oleg/Projects/sts4/headless-services/spring-boot-language-server/target/spring-boot-language-server-1.54.0-SNAPSHOT-exec.jar",
+    --"-javaagent:/home/oleg/Downloads/value-2.9.3.jar"
   },
 
   -- This is the default if not provided, you can remove it. Or adjust as needed.
@@ -131,29 +170,14 @@ local config = {
     allow_incremental_sync = true,
   },
   init_options = {
-    bundles = {
-      vim.fn.glob("/home/oleg/Downloads/com.microsoft.java.debug.plugin-0.50.0.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/com.microsoft.java.test.plugin-0.40.1.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/com.microsoft.java.test.runner-jar-with-dependencies.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-jupiter-api_5.9.3.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-jupiter-engine_5.9.3.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-jupiter-migrationsupport_5.9.3.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-jupiter-params_5.9.3.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-commons_1.9.3.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-engine_1.9.3.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-launcher_1.9.3.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-runner_1.9.3.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-suite-api_1.9.3.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-suite-commons_1.9.3.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-platform-suite-engine_1.9.3.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/junit-vintage-engine_5.9.3.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/org.apiguardian.api_1.1.2.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/org.eclipse.jdt.junit4.runtime_1.3.0.v20220609-1843.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/org.eclipse.jdt.junit5.runtime_1.1.100.v20220907-0450.jar", 1),
-      vim.fn.glob("/home/oleg/.local/share/nvim/mason/packages/java-test/extension/server/org.eclipse.jdt.junit5.runtime_1.1.100.v20220907-0450.jar", 1),
-    },
+    bundles =  bundles,
   },
 }
+
+config["on_init"] = function(client, _)
+  --require("spring_boot").enable_classpath_listening()
+end
+
 
 config['on_attach'] = function(client, bufnr)
   require 'keymaps'.map_java_keys(bufnr);

@@ -190,7 +190,7 @@ packer.startup(function(use)
       "MunifTanjim/nui.nvim",
       "nvim-lua/plenary.nvim",
       "sindrets/diffview.nvim",
-      "stevearc/dressing.nvim",    -- Recommended but not required. Better UI for pickers.
+      "stevearc/dressing.nvim",      -- Recommended but not required. Better UI for pickers.
       "nvim-tree/nvim-web-devicons", -- Recommended but not required. Icons in discussion tree.
     },
     run = function() require("gitlab.server").build(true) end,
@@ -199,5 +199,44 @@ packer.startup(function(use)
     end,
   }
   use "folke/neodev.nvim"
+
+  use {
+    "JavaHello/spring-boot.nvim",
+    --ft = "java",
+    requires = {
+      "mfussenegger/nvim-jdtls",
+      "ibhagwan/fzf-lua", -- 可选
+    },
+  }
+  use { "ibhagwan/fzf-lua",
+    requires = {
+      "vijaymarupudi/nvim-fzf",
+      "kyazdani42/nvim-web-devicons" -- optional for icons
+    }
+  }
+  --- go
+  use 'ray-x/go.nvim'
+  use 'ray-x/guihua.lua' -- recommended if need floating window support
+  -- clipboard
+  use {
+    "AckslD/nvim-neoclip.lua",
+    requires = {
+      { 'kkharji/sqlite.lua',           module = 'sqlite' },
+      -- you'll need at least one of these
+      { 'nvim-telescope/telescope.nvim' },
+      -- {'ibhagwan/fzf-lua'},
+    },
+    config = function()
+      require('neoclip').setup()
+    end,
+  }
+  use { 'nvim-telescope/telescope-dap.nvim'}
+  use {
+    'akinsho/flutter-tools.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'stevearc/dressing.nvim',   -- optional for vim.ui.select
+    },
+  }
 end
 )

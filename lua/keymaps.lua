@@ -26,7 +26,7 @@ function git_commit_push_all()
 end
 
 -- Telescope
-key_map('n', '<C-p>', ':lua require"telescope.builtin".find_files()<CR>')
+--key_map('n', '<C-p>', ':lua require"telescope.builtin".find_files()<CR>')
 key_map('n', '<leader>fs', ':lua require"telescope.builtin".live_grep()<CR>')
 key_map('n', '<leader>fh', ':lua require"telescope.builtin".help_tags()<CR>')
 key_map('n', '<leader>fb', ':lua require"telescope.builtin".buffers()<CR>')
@@ -47,10 +47,10 @@ vim.keymap.set("n", "<leader>sC", function()
 end, { desc = "Compare 2 files" })
 vim.keymap.set("n", "<leader>sc", function()
   require("telescope").extensions.diff.diff_current({ hidden = true })
-end, { desc = "Compare file with current" })
+end, { desc = "Compare file with Surrent" })
 
 -- Git
-key_map('n', '<leader>gc', ':lua git_commit_all()<CR>')
+key_map('n', '<leader>gS', ':lua git_commit_all()<CR>')
 key_map('n', '<leader>ga', ':lua git_commit_push_all()<CR>')
 
 --LSP
@@ -297,26 +297,41 @@ vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search(
 
 
 -- local gitlab_server = require("gitlab.server")
- key_map("n", "glr",  ':lua require("gitlab").review()<CR>')
- key_map("n", "gls",  ':lua require("gitlab").summary()<CR>')
- key_map("n", "glA",  ':lua require("gitlab").approve()<CR>')
- key_map("n", "glR",  ':lua require("gitlab").revoke()<CR>')
- key_map("n", "glc",  ':lua require("gitlab").create_comment()<CR>')
- key_map("v", "glc",  ':lua require("gitlab").create_multiline_comment()<CR>')
- key_map("v", "glC",  ':lua require("gitlab").create_comment_suggestion()<CR>')
- key_map("n", "glO",  ':lua require("gitlab").create_mr()<CR>')
- key_map("n", "glm",  ':lua require("gitlab").move_to_discussion_tree_from_diagnostic()<CR>')
- key_map("n", "gln",  ':lua require("gitlab").create_note()<CR>')
- key_map("n", "gld",  ':lua require("gitlab").toggle_discussions()<CR>')
- key_map("n", "glaa", ':lua require("gitlab").add_assignee()<CR>')
- key_map("n", "glad", ':lua require("gitlab").delete_assignee()<CR>')
- key_map("n", "glla", ':lua require("gitlab").add_label()<CR>')
- key_map("n", "glld", ':lua require("gitlab").delete_label()<CR>')
- key_map("n", "glra", ':lua require("gitlab").add_reviewer()<CR>')
- key_map("n", "glrd", ':lua require("gitlab").delete_reviewer()<CR>')
- key_map("n", "glp",  ':lua require("gitlab").pipeline()<CR>')
- key_map("n", "glo",  ':lua require("gitlab").open_in_browser()<CR>')
- key_map("n", "glM",  ':lua require("gitlab").merge()<CR>')
+key_map("n", "glr", ':lua require("gitlab").review()<CR>')
+key_map("n", "gls", ':lua require("gitlab").summary()<CR>')
+key_map("n", "glA", ':lua require("gitlab").approve()<CR>')
+key_map("n", "glR", ':lua require("gitlab").revoke()<CR>')
+key_map("n", "glc", ':lua require("gitlab").create_comment()<CR>')
+key_map("v", "glc", ':lua require("gitlab").create_multiline_comment()<CR>')
+key_map("v", "glC", ':lua require("gitlab").create_comment_suggestion()<CR>')
+key_map("n", "glO", ':lua require("gitlab").create_mr()<CR>')
+key_map("n", "glm", ':lua require("gitlab").move_to_discussion_tree_from_diagnostic()<CR>')
+key_map("n", "gln", ':lua require("gitlab").create_note()<CR>')
+key_map("n", "gld", ':lua require("gitlab").toggle_discussions()<CR>')
+key_map("n", "glaa", ':lua require("gitlab").add_assignee()<CR>')
+key_map("n", "glad", ':lua require("gitlab").delete_assignee()<CR>')
+key_map("n", "glla", ':lua require("gitlab").add_label()<CR>')
+key_map("n", "glld", ':lua require("gitlab").delete_label()<CR>')
+key_map("n", "glra", ':lua require("gitlab").add_reviewer()<CR>')
+key_map("n", "glrd", ':lua require("gitlab").delete_reviewer()<CR>')
+key_map("n", "glp", ':lua require("gitlab").pipeline()<CR>')
+key_map("n", "glo", ':lua require("gitlab").open_in_browser()<CR>')
+key_map("n", "glM", ':lua require("gitlab").merge()<CR>')
 
+key_map("n", "C-p", ":Telescope neoclip<CR>")
+key_map("v", "C-p", ":Telescope neoclip<CR>")
+
+
+vim.keymap.set('i', '<C-a>', 'copilot#Accept("\\<CR>")', {
+  expr = true,
+  replace_keycodes = false
+})
+--vim.g.copilot_no_tab_map = true
 
 return P
+
+
+--vim-easymotion:
+--Install vim-easymotion.
+--Use the <Leader><Leader> command followed by a character to jump to any occurrence of that character in the buffer.
+--Use <Leader><Leader>s to jump to the start of any occurrence.
